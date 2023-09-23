@@ -1,7 +1,11 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from rest_auth.registration.serializers import RegisterSerializer
 
 from api.models import *
+
+class CustomRegisterSerializer(RegisterSerializer):
+    pass
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
