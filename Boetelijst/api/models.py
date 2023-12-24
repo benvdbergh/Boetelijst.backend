@@ -45,6 +45,7 @@ class Rule(models.Model):
 
 class Felony(models.Model):
     felony_rule = models.ForeignKey(Rule, on_delete=models.CASCADE)
+    felony_team = models.ForeignKey(Team, on_delete=models.CASCADE)
     felony_member = models.ForeignKey(Member, on_delete=models.CASCADE)
     felony_comment = models.CharField(max_length=256)
     felony_initial_fee = models.DecimalField(max_digits=5, decimal_places=2)

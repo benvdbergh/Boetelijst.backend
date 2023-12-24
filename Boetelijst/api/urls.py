@@ -3,6 +3,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_auth.registration.views import SocialAccountListView
+from rest_framework.authtoken.views import obtain_auth_token
 from .views import *
 
 schema_view = get_schema_view(
@@ -22,10 +23,17 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),path('rest-auth/', include('rest_auth.urls')),
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # path('rest-auth/', include('rest_auth.urls')),
     # path('rest-auth/registration/', include('rest_auth.registration.urls')),
     # path('rest-auth/google/', SocialAccountListView.as_view()),
-    path('accounts/', include('allauth.urls')),
+    # path('accounts/', include('allauth.urls')),
+    
+    # path("hello/", greeting.as_view(), name="greeting"),
+    # path("register/", RegisterNewUser.as_view(),name="register"),
+    # path("login/", obtain_auth_token,name="create_token"),
+
+
     path('team', TeamList.as_view()),
     path('team/<int:pk>', Team.as_view()),
     path('member', MemberList.as_view()),
