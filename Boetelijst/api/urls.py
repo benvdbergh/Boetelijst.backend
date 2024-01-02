@@ -5,6 +5,7 @@ from drf_yasg import openapi
 from rest_auth.registration.views import SocialAccountListView
 from rest_framework.authtoken.views import obtain_auth_token
 from .views import *
+from rest_framework_simplejwt import views as jwt_views
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -33,13 +34,17 @@ urlpatterns = [
     # path("register/", RegisterNewUser.as_view(),name="register"),
     # path("login/", obtain_auth_token,name="create_token"),
 
-
-    path('team', TeamList.as_view()),
-    path('team/<int:pk>', Team.as_view()),
-    path('member', MemberList.as_view()),
-    path('member/<int:pk>', Member.as_view()),
-    path('rule', RuleList.as_view()),
-    path('rule/<int:pk>', Rule.as_view()),
-    path('felony', FelonyList.as_view()),
-    path('felony/<int:pk>', Felony.as_view())
+    path('team', TeamListView.as_view()),
+    path('team/<int:pk>', TeamView.as_view()),
+    path('<str:team_handle>/role', RoleListView.as_view()),
+    path('<str:team_handle>/role/<int:pk>', RoleView.as_view()),
+    path('<str:team_handle>/member', MemberListView.as_view()),
+    path('<str:team_handle>/member/<int:pk>', MemberView.as_view()),
+    path('<str:team_handle>/rule', RuleListView.as_view()),
+    path('<str:team_handle>/rule/<int:pk>', RuleView.as_view()),
+    path('<str:team_handle>/felony', FelonyListView.as_view()),
+    path('<str:team_handle>/felony/<int:pk>', FelonyView.as_view()),
+    path('token', jwt_views.TokenObtainPairView.as_view(), name ='token_obtain_pair'),
+    path('token/refresh', jwt_views.TokenRefreshView.as_view(), name ='token_refresh'),
+    path('logout', LogoutView.as_view(), name ='logout')
 ]

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
 
-from api.models import Team, Member, Rule, Felony
+from api.models import Team, Role, Member, Rule, Felony
 
 class CustomRegisterSerializer(RegisterSerializer):
     pass
@@ -24,7 +24,18 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = '__all__'
         lookup_field = 'id'
 
+class RoleSerializer(serializers.ModelSerializer):
+    role_team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=False)
+
+    class Meta:
+        model = Role
+        fields = '__all__'
+        lookup_field = 'id'
+
 class MemberSerializer(serializers.ModelSerializer):
+    member_team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=False)
+    member_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+
     class Meta:
         model = Member
         fields = '__all__'

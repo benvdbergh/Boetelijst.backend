@@ -1,8 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class UserRole(models.Model):
+class Team(models.Model):
+    team_handle = models.CharField(max_length=50, primary_key=True)
+    team_name = models.CharField(max_length=50)
+    team_created_date = models.DateTimeField(auto_now=False, auto_now_add=True)
+    team_modified_date = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+class Role(models.Model):
     role_name = models.CharField(max_length=50)
-    role_permissions = models.JSONField()
+    role_team = models.ForeignKey(Team, on_delete=models.CASCADE)
     role_add_rule = models.BooleanField()
     role_edit_rule = models.BooleanField()
     role_delete_rule = models.BooleanField()
@@ -11,11 +18,6 @@ class UserRole(models.Model):
     role_delete_felony = models.BooleanField()
     role_add_member = models.BooleanField()
     role_delete_memeber = models.BooleanField()
-
-class Team(models.Model):
-    team_name = models.CharField(max_length=50)
-    team_created_date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    team_modified_date = models.DateTimeField(auto_now=True, auto_now_add=False)
     
 class Member(models.Model):
     pos_enum = (
@@ -28,9 +30,8 @@ class Member(models.Model):
     )
 
     member_team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    # member_user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    member_user_name = models.CharField(max_length=50)
-    member_user_role = models.ForeignKey(UserRole, on_delete=models.CASCADE)
+    member_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    member_user_role = models.ForeignKey(Role, on_delete=models.CASCADE)
     member_position = models.CharField(max_length=50, choices=pos_enum)
     member_created_date = models.DateTimeField(auto_now=False, auto_now_add=True)
     member_modified_date = models.DateTimeField(auto_now=True, auto_now_add=False)
