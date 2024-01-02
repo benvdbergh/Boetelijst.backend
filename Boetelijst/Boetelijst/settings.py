@@ -29,7 +29,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -38,9 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    'corsheaders',
     "api.apps.ApiConfig",
     "rest_framework",
-    'corsheaders',
+    "rest_framework_simplejwt.token_blacklist",
     'drf_yasg',
     'rest_framework.authtoken',
     'allauth',
@@ -51,10 +51,10 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -65,6 +65,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = "Boetelijst.urls"
 
 TEMPLATES = [
@@ -122,6 +123,23 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'
 
+LOGGING = {
+    "version": 1,  # the dictConfig format version
+    "disable_existing_loggers": False,  # retain the default loggers
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+    },
+}
+
 # Additional configuration settings
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_LOGOUT_ON_GET= True
@@ -155,5 +173,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
     ],
 }
